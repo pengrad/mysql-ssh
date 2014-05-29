@@ -39,6 +39,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile "org.androidannotations:androidannotations-api:$androidAnnotationsVersion"
     apt "org.androidannotations:androidannotations:$androidAnnotationsVersion"
+    compile 'com.jcraft:jsch:+'
+    compile 'mysql:mysql-connector-java:+'
 }
 
 def getSourceSetName(variant) {
