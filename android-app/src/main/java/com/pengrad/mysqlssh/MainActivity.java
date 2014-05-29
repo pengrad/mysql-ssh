@@ -1,4 +1,4 @@
-package com.pengrad.android_app;
+package com.pengrad.mysqlssh;
 
 import android.support.v7.app.ActionBarActivity;
 import org.androidannotations.annotations.EActivity;
