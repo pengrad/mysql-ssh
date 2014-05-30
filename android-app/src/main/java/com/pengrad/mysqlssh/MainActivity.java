@@ -1,7 +1,11 @@
 package com.pengrad.mysqlssh;
 
 import android.support.v7.app.ActionBarActivity;
+import android.widget.TextView;
+import com.pengrad.mysqlssh.core.Test;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 /**
  * User: stas
@@ -10,4 +14,12 @@ import org.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity {
+
+    @ViewById
+    TextView text;
+
+    @AfterViews
+    protected void init() {
+        text.setText(Test.A);
+    }
 }

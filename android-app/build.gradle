@@ -41,6 +41,7 @@ dependencies {
     apt "org.androidannotations:androidannotations:$androidAnnotationsVersion"
     compile 'com.jcraft:jsch:+'
     compile 'mysql:mysql-connector-java:+'
+    compile project(':core')
 }
 
 def getSourceSetName(variant) {
