@@ -35,13 +35,11 @@ dependencies {
         androidAnnotationsVersion = '3.0.1'
     }
 
+    compile project(':core')
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile "org.androidannotations:androidannotations-api:$androidAnnotationsVersion"
     apt "org.androidannotations:androidannotations:$androidAnnotationsVersion"
-    compile 'com.jcraft:jsch:+'
-    compile 'mysql:mysql-connector-java:+'
-    compile project(':core')
 }
 
 def getSourceSetName(variant) {
