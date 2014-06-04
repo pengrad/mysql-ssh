@@ -15,7 +15,7 @@
             android:theme="@style/AppTheme">
         <activity android:name="com.pengrad.mysqlssh.MainActivity_"/>
         <activity
-                android:name=".LoginActivity_auto"
+                android:name=".LoginActivity"
                 android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

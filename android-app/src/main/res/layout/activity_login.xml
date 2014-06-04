@@ -1,6 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:tools="http://schemas.android.com/tools"
-       tools:context="com.pengrad.mysqlssh.LoginActivity_auto">
+       tools:context="com.pengrad.mysqlssh.LoginActivity">
 
     <!-- Login progress -->
     <LinearLayout android:id="@+id/login_status"
@@ -78,7 +78,6 @@
                     android:paddingLeft="32dp"
                     android:paddingRight="32dp"
                     android:layout_gravity="right"/>
-
         </LinearLayout>
 
     </ScrollView>
