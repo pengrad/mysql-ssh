@@ -1,0 +1,85 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       tools:context="com.pengrad.mysqlssh.LoginActivity_auto">
+
+    <!-- Login progress -->
+    <LinearLayout android:id="@+id/login_status"
+                  android:visibility="gone"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical">
+        <ProgressBar style="?android:attr/progressBarStyleLarge"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginBottom="8dp"/>
+        <TextView
+                android:id="@+id/login_status_message"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/login_progress_connecting"/>
+    </LinearLayout>
+
+    <!-- Login form -->
+    <ScrollView
+            android:id="@+id/login_form"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout style="@style/LoginFormContainer"
+                      android:orientation="vertical">
+
+            <EditText android:id="@+id/host"
+                      android:singleLine="true"
+                      android:maxLines="1"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="@string/prompt_host"/>
+
+            <EditText android:id="@+id/user"
+                      android:singleLine="true"
+                      android:maxLines="1"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="@string/prompt_user"/>
+
+            <EditText android:id="@+id/password"
+                      android:singleLine="true"
+                      android:maxLines="1"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:inputType="textPassword"
+                      android:hint="@string/prompt_password"/>
+
+            <EditText android:id="@+id/database"
+                      android:singleLine="true"
+                      android:maxLines="1"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="@string/prompt_database"/>
+
+            <EditText android:id="@+id/port"
+                      android:singleLine="true"
+                      android:maxLines="1"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:inputType="number"
+                      android:hint="@string/prompt_port"/>
+
+            <Button android:id="@+id/button_connect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_connect"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:layout_gravity="right"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</merge>
