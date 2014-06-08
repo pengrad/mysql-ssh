@@ -12,7 +12,7 @@ import java.util.Properties;
  * Date: 06.06.14 20:49
  */
 
-public class JSchConnectionManager implements ConnectionManager {
+public class JSchConnectionFactory implements ConnectionFactory {
 
     static {
         try {
@@ -26,7 +26,7 @@ public class JSchConnectionManager implements ConnectionManager {
     private Properties sshConfig;
     private Session sshSession;
 
-    public JSchConnectionManager() {
+    public JSchConnectionFactory() {
         jsch = new JSch();
         sshConfig = new Properties();
         sshConfig.put("StrictHostKeyChecking", "no");
@@ -38,10 +38,6 @@ public class JSchConnectionManager implements ConnectionManager {
 
     public Connection openSSHConnection() {
         return null;
-    }
-
-    public void closeConnection() {
-        if (sshSession != null) sshSession.disconnect();
     }
 
     private Session doSshTunnel(String user, String pass, String host, int portLocal, int portRemote) throws JSchException {
