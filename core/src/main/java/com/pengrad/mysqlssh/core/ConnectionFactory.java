@@ -1,6 +1,8 @@
 package com.pengrad.mysqlssh.core;
 
-import java.sql.Connection;
+import com.jcraft.jsch.JSchException;
+
+import java.sql.SQLException;
 
 /**
  * User: stas
@@ -8,8 +10,10 @@ import java.sql.Connection;
  */
 public interface ConnectionFactory {
 
-    Connection openConnection();
+    Connection openConnection(String host, String user, String password, String database, Integer port)
+            throws SQLException;
 
-    Connection openSSHConnection();
+    Connection openSSHConnection(String sshHost, String sshUser, String sshPassword, Integer sshPort, String host,
+                                 String user, String password, String database, Integer port) throws SQLException, JSchException;
 
 }
