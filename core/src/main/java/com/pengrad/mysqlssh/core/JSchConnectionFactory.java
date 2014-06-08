@@ -4,7 +4,8 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -24,7 +25,6 @@ public class JSchConnectionFactory implements ConnectionFactory {
 
     private JSch jsch;
     private Properties sshConfig;
-    private Session sshSession;
 
     public JSchConnectionFactory() {
         jsch = new JSch();
@@ -32,20 +32,39 @@ public class JSchConnectionFactory implements ConnectionFactory {
         sshConfig.put("StrictHostKeyChecking", "no");
     }
 
-    public Connection openConnection() {
-        return null;
+    public Connection openConnection(String host, String user, String password, String database, Integer port) throws SQLException {
+        StringBuilder url = new StringBuilder("jdbc:mysql:/")
+                .append(host)
+                .append(":")
+                .append(port != null ? port : 3306)
+                .append("/")
+                .append(database != null ? database : "mysql");
+        java.sql.Connection connection = DriverManager.getConnection(url.toString(), user, password);
+        return new JSchConnection(connection, null);
     }
 
-    public Connection openSSHConnection() {
-        return null;
+    public Connection openSSHConnection(String sshHost, String sshUser, String sshPassword, Integer sshPort,
+                                        String host, String user, String password, String database, Integer port) throws SQLException, JSchException {
+        int _sshPort = sshPort != null ? sshPort : 22;
+        int _port = port != null ? port : 3306;
+        Session session = doSshTunnel(sshHost, sshUser, sshPassword, _sshPort, _port, _port);
+        StringBuilder url = new StringBuilder("jdbc:mysql:/")
+                .append(host)
+                .append(":")
+                .append(_port)
+                .append("/")
+                .append(database != null ? database : "mysql");
+        java.sql.Connection connection = DriverManager.getConnection(url.toString(), user, password);
+        return new JSchConnection(connection, session);
     }
 
-    private Session doSshTunnel(String user, String pass, String host, int portLocal, int portRemote) throws JSchException {
-        Session session = jsch.getSession(user, host, 22);
+    private Session doSshTunnel(String host, String user, String pass, int port, int portLocal, int portRemote) throws JSchException {
+        Session session = jsch.getSession(user, host, port);
         session.setPassword(pass);
         session.setConfig(sshConfig);
         session.connect();
         session.setPortForwardingL(portLocal, host, portRemote);
         return session;
     }
+
 }
