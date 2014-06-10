@@ -32,22 +32,32 @@ public class JSchConnectionFactory implements ConnectionFactory {
         sshConfig.put("StrictHostKeyChecking", "no");
     }
 
-    public Connection openConnection(ConnectionProperties connectionProperties) throws SQLException, JSchException {
+    public Connection openConnection(ConnectionProperties connectionProperties) throws ConnectionException {
         String host = connectionProperties.getHost();
         String user = connectionProperties.getUser();
         String password = connectionProperties.getPassword();
         String database = connectionProperties.getDatabase();
         int port = connectionProperties.getPort() != null ? connectionProperties.getPort() : 3306;
+
         Session session = null;
         if (connectionProperties.isSSH()) {
             String sshHost = connectionProperties.getSshHost();
             String sshUser = connectionProperties.getSshUser();
             String sshPassword = connectionProperties.getSshPassword();
             int sshPort = connectionProperties.getSshPort() != null ? connectionProperties.getSshPort() : 22;
-            session = doSshTunnel(sshHost, sshUser, sshPassword, sshPort, port, port);
+            try {
+                session = doSshTunnel(sshHost, sshUser, sshPassword, sshPort, port, port);
+            } catch (JSchException e) {
+                throw new ConnectionException("Can't connect to SSH", e);
+            }
         }
         String url = "jdbc:mysql:/" + host + ":" + port + "/" + (database != null ? database : "mysql");
-        java.sql.Connection connection = DriverManager.getConnection(url, user, password);
+        java.sql.Connection connection;
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            throw new ConnectionException("Can't connect to MySQL", e);
+        }
         return new JSchConnection(connection, session);
     }
 
