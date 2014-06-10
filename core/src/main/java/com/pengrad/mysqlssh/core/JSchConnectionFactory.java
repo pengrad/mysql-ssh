@@ -32,29 +32,22 @@ public class JSchConnectionFactory implements ConnectionFactory {
         sshConfig.put("StrictHostKeyChecking", "no");
     }
 
-    public Connection openConnection(String host, String user, String password, String database, Integer port) throws SQLException {
-        StringBuilder url = new StringBuilder("jdbc:mysql:/")
-                .append(host)
-                .append(":")
-                .append(port != null ? port : 3306)
-                .append("/")
-                .append(database != null ? database : "mysql");
-        java.sql.Connection connection = DriverManager.getConnection(url.toString(), user, password);
-        return new JSchConnection(connection, null);
-    }
-
-    public Connection openSSHConnection(String sshHost, String sshUser, String sshPassword, Integer sshPort,
-                                        String host, String user, String password, String database, Integer port) throws SQLException, JSchException {
-        int _sshPort = sshPort != null ? sshPort : 22;
-        int _port = port != null ? port : 3306;
-        Session session = doSshTunnel(sshHost, sshUser, sshPassword, _sshPort, _port, _port);
-        StringBuilder url = new StringBuilder("jdbc:mysql:/")
-                .append(host)
-                .append(":")
-                .append(_port)
-                .append("/")
-                .append(database != null ? database : "mysql");
-        java.sql.Connection connection = DriverManager.getConnection(url.toString(), user, password);
+    public Connection openConnection(ConnectionProperties connectionProperties) throws SQLException, JSchException {
+        String host = connectionProperties.getHost();
+        String user = connectionProperties.getUser();
+        String password = connectionProperties.getPassword();
+        String database = connectionProperties.getDatabase();
+        int port = connectionProperties.getPort() != null ? connectionProperties.getPort() : 3306;
+        Session session = null;
+        if (connectionProperties.isSSH()) {
+            String sshHost = connectionProperties.getSshHost();
+            String sshUser = connectionProperties.getSshUser();
+            String sshPassword = connectionProperties.getSshPassword();
+            int sshPort = connectionProperties.getSshPort() != null ? connectionProperties.getSshPort() : 22;
+            session = doSshTunnel(sshHost, sshUser, sshPassword, sshPort, port, port);
+        }
+        String url = "jdbc:mysql:/" + host + ":" + port + "/" + (database != null ? database : "mysql");
+        java.sql.Connection connection = DriverManager.getConnection(url, user, password);
         return new JSchConnection(connection, session);
     }
 
