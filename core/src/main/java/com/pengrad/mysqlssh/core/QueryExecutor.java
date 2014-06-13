@@ -37,9 +37,16 @@ public class QueryExecutor {
                 }
                 data.add(row);
             }
+            resultSet.close();
             queryResult.setResultSet(data);
         } else {
-
+            int rowCount = statement.getUpdateCount();
+            if (rowCount == -1) {
+                queryResult.setResultType(QueryResult.RESULT_TYPE_NONE);
+            } else {
+                queryResult.setResultType(QueryResult.RESULT_TYPE_ROWCOUNT);
+                queryResult.setRowCount(rowCount);
+            }
         }
         return queryResult;
     }
